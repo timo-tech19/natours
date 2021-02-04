@@ -1,7 +1,7 @@
 import '@babel/polyfill';
 import { login, logout } from './login';
 import { updateSettings } from './updateSetting';
-// import { bookTour } from './stripe';
+import { bookTour } from './stripe';
 
 // DOM Elements
 // const mapbBox = document.getElementById('map');
@@ -59,5 +59,5 @@ if (bookBtn)
     bookBtn.addEventListener('click', async (e) => {
         e.target.textContent = 'Processing...';
         const { tourId } = e.target.dataset;
-        // await bookTour(tourId);
+        await bookTour(tourId);
     });

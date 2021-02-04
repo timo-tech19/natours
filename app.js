@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -31,9 +32,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Set secure http headers
 // app.use(helmet());
 app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
+    helmet({
+        contentSecurityPolicy: false,
+    })
 );
 
 // Parse Request body
@@ -50,37 +51,39 @@ app.use(xss());
 
 // Prevent parameter pollution
 app.use(
-  hpp({
-    whitelist: [
-      'duration',
-      'ratingsQuantity',
-      'ratingsAverage',
-      'maxGroupSize',
-      'difficulty',
-      'price',
-    ],
-  })
+    hpp({
+        whitelist: [
+            'duration',
+            'ratingsQuantity',
+            'ratingsAverage',
+            'maxGroupSize',
+            'difficulty',
+            'price',
+        ],
+    })
 );
+
+app.use(compression());
 
 // Logger
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+    app.use(morgan('dev'));
 }
 
 // Limit request
 const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: 'Too many request from this IP, please try again in an hour',
+    max: 100,
+    windowMs: 60 * 60 * 1000,
+    message: 'Too many request from this IP, please try again in an hour',
 });
 app.use('/api', limiter);
 
 // Test middleware
 app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
+    req.requestTime = new Date().toISOString();
 
-  // console.log(req.headers);
-  next();
+    // console.log(req.headers);
+    next();
 });
 
 // Mount Routes(Resources)
@@ -91,7 +94,7 @@ app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
-  next(new AppError(`Route ${req.originalUrl} not found on server`), 404);
+    next(new AppError(`Route ${req.originalUrl} not found on server`), 404);
 });
 
 // Error handling middleware

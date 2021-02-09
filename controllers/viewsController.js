@@ -80,3 +80,11 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
         user: updatedUser,
     });
 });
+
+exports.alerts = (req, res, next) => {
+    const { alert } = req.params;
+
+    if (alert === 'booking')
+        req.locals.alert = `Tour has been booked, if tour doesn't show up immediately in "My Tours" please wait a few minutes and reload the page`;
+    next();
+};

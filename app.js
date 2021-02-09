@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -17,10 +18,16 @@ const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const { webhookCheckout } = require('./controllers/bookingController');
 
 const app = express();
 
 app.enable('trust proxy');
+
+// Enable cross origin resourse sharing
+app.use(cors());
+
+app.options('*', cors());
 
 // View Engine
 app.set('view engine', 'pug');
@@ -37,6 +44,13 @@ app.use(
     helmet({
         contentSecurityPolicy: false,
     })
+);
+
+// Stripe requires the body of the payment request to be in raw format instead of json
+app.post(
+    '/webhook-checkout',
+    express.raw({ type: 'application/json' }),
+    webhookCheckout
 );
 
 // Parse Request body

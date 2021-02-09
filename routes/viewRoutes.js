@@ -16,7 +16,7 @@ router.get('/my-tours', protect, getMyTours);
 
 router.use(isLoggedIn);
 // View Routes
-router.get('/', createBoookingCheckout, getOverview);
+router.get('/', getOverview);
 router.get('/tour/:slug', getTour);
 router.get('/login', login);
 

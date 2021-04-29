@@ -50,8 +50,8 @@ exports.signup = catchAsync(async (req, res, next) => {
         role,
     });
 
-    const url = `${req.protocol}://${req.get('host')}/me `;
-    await new Email(newUser, url).sendWelcome();
+    // const url = `${req.protocol}://${req.get('host')}/me `;
+    // await new Email(newUser, url).sendWelcome();
     const token = signToken(newUser._id);
 
     res.status(201).json({

@@ -42,6 +42,13 @@ exports.login = (req, res, next) => {
     });
 };
 
+exports.signup = (req, res, next) => {
+    // send llogin form
+    res.status(200).render('signup', {
+        title: 'Sign up a new account',
+    });
+};
+
 exports.getAccount = (req, res) => {
     res.status(200).render('account', {
         title: 'Your Account',

@@ -1,6 +1,6 @@
 const express = require('express');
 const { isLoggedIn, protect } = require('../controllers/authController');
-const { createBoookingCheckout } = require('../controllers/bookingController');
+// const { createBoookingCheckout } = require('../controllers/bookingController');
 const {
     getOverview,
     getTour,
@@ -8,6 +8,7 @@ const {
     getAccount,
     getMyTours,
     alerts,
+    signup,
 } = require('../controllers/viewsController');
 
 const router = express.Router();
@@ -22,5 +23,6 @@ router.use(isLoggedIn);
 router.get('/', getOverview);
 router.get('/tour/:slug', getTour);
 router.get('/login', login);
+router.get('/signup', signup);
 
 module.exports = router;

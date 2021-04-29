@@ -1,5 +1,5 @@
 import '@babel/polyfill';
-import { login, logout } from './login';
+import { login, logout, signup } from './login';
 import { updateSettings } from './updateSetting';
 import { bookTour } from './stripe';
 import { showAlert } from './alerts';
@@ -7,19 +7,36 @@ import { showAlert } from './alerts';
 // DOM Elements
 // const mapbBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
+const btnSignup = document.querySelector('.btn-signup');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const settingBtn = document.querySelector('.btn-data');
 const passwordBtn = document.querySelector('.btn-password');
 const emailField = document.getElementById('email');
 const passwordField = document.getElementById('password');
+const confirmPasswordField = document.getElementById('confirm-password');
 const nameField = document.getElementById('name');
+const usernameField = document.getElementById('user-name');
 const bookBtn = document.getElementById('book-btn');
 
 // Add event to login form
+if (btnSignup) {
+    btnSignup.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const name = usernameField.value;
+        const email = emailField.value;
+        const password = passwordField.value;
+        const confirmPassword = confirmPasswordField.value;
+
+        signup(name, email, password, confirmPassword);
+    });
+}
+
 if (loginForm) {
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
+        const name = emailField.value;
         const email = emailField.value;
         const password = passwordField.value;
 
